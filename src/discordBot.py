@@ -14,8 +14,6 @@ import os
 # load_dotenv()
 
 # GRAB THE API TOKEN FROM THE .ENV FILE.
-DISCORD_TOKEN = "MTI3MTU1NTUyOTcyNjIzNDYzNg.GZJsuj.MiRqXlsH4ks8uNddR8Mvsj630TsE9R8m6gADdA"
-
 
 # GETS THE CLIENT OBJECT FROM DISCORD.PY. CLIENT IS SYNONYMOUS WITH BOT.
 bot = discord.Client(intents=discord.Intents.default())
@@ -69,14 +67,29 @@ async def on_ready():
 @bot.event
 async def on_message(message):
 	# CHECKS IF THE MESSAGE THAT WAS SENT IS EQUAL TO "HELLO".
-	if message.content == "Testing":
-		# SENDS BACK A MESSAGE TO THE CHANNEL.
-		await message.channel.send("hey")
-		display_message = await check_website_status("https://dev.waku-travel.com/")
-		await send_message_to_channel(VIVY_CHANNEL_ID, display_message)
+    # part1, delimiter, part2 = message.partition('@')
+    # print(f"Message from {message.author}: {message.content}")
+    # print(f"Channel: {message.channel.name}")
+    # print(f"Guild: {message.guild.name if message.guild else 'DM'}")
+    # print(f"Created at: {message.created_at}")
+    print("message ", message.author)
+    # print("part1, delimiter, part2 "+ part1, delimiter, part2)
+    if message.content.lower() == "Good morning".lower():
+        await message.channel.send("Good morning "+ message.author.name)
+    if message.content.lower() == "Waku Waku".lower():
+        await message.channel.send("Hey beautiful")
+    if message.content.lower() == "Status".lower():
+        display_message = await check_website_status("https://dev.waku-travel.com/")
+        await message.channel.send(display_message)
+    if message.content.lower() == "StatusAll".lower():
+        display_message = await check_website_status("https://dev.waku-travel.com/")
+        await send_message_to_channel(VIVY_CHANNEL_ID, display_message)
+        
 
 # EXECUTES THE BOT WITH THE SPECIFIED TOKEN. TOKEN HAS BEEN REMOVED AND USED JUST AS AN EXAMPLE.
 
+def run_discord_bot(discord_bot_key):
+    bot.run(discord_bot_key)
 
 
 if __name__ == "__main__":  
