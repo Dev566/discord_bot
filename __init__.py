@@ -51,7 +51,7 @@ import threading
 import asyncio
 import os
 from dotenv import load_dotenv , dotenv_values
-from discordBot1 import discord_bot_run
+from discordBot import discord_bot_run
 load_dotenv()
 
 app = Flask(__name__)
