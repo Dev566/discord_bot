@@ -3,6 +3,7 @@ import discord
 from datetime import datetime, timedelta
 import time
 import requests
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # IMPORT THE OS MODULE.
 import os
@@ -22,6 +23,10 @@ intents.message_content = True
 bot = discord.Client(intents=intents)
 time_interval = 60
 VIVY_CHANNEL_ID = 1271030253392760916
+MODEL_NAME = 'microsoft/DialoGPT-medium'
+# Load Hugging Face Transformer model and tokenizer
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 
 async def check_website_status(url):
     try:
@@ -79,17 +84,24 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+    input_text = message.content
+    
     # print("part1, delimiter, part2 "+ part1, delimiter, part2)
-    if message.content.lower() == "Good morning".lower():
+    if input_text.lower() == "Good morning".lower():
         await message.channel.send("Good morning "+ message.author.name)
-    if message.content.lower() == "Waku Waku".lower():
+    if input_text.lower() == "Waku Waku".lower():
         await message.channel.send("Hey beautiful")
-    if message.content.lower() == "Status".lower():
+    if input_text.lower() == "Status".lower():
         display_message = await check_website_status("https://dev.waku-travel.com/")
         await message.channel.send(display_message)
-    if message.content.lower() == "StatusAll".lower():
+    if input_text.lower() == "StatusAll".lower():
         display_message = await check_website_status("https://dev.waku-travel.com/")
         await send_message_to_channel(VIVY_CHANNEL_ID, display_message)
+    else:
+        new_user_input_ids = tokenizer.encode(input_text + tokenizer.eos_token, return_tensors='pt') # Generate a response 
+        chat_history_ids = model.generate(new_user_input_ids, max_length=1000, pad_token_id=tokenizer.eos_token_id) 
+        chat_output = tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)
+        await message.channel.send(chat_output)
         
 
 # EXECUTES THE BOT WITH THE SPECIFIED TOKEN. TOKEN HAS BEEN REMOVED AND USED JUST AS AN EXAMPLE.
