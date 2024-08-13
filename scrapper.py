@@ -4,7 +4,7 @@ import spacy
 
 # Load the spaCy model
 # nlp = spacy.load("./src/model-best")
-nlp = spacy.load("en_core_web_md")
+nlp = spacy.load("en")
 
 def get_page_content(url):
     # Send a GET request to the webpage

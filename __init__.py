@@ -53,7 +53,7 @@ import asyncio
 import os
 from dotenv import load_dotenv , dotenv_values
 from discordBot import discord_bot_run
-from scrapper import process_and_analyse
+# from scrapper import process_and_analyse
 load_dotenv()
 
 app = Flask(__name__)
@@ -63,10 +63,10 @@ def home():
     return "Thanks for waking me up!"
 
 
-@app.route('/scrap', methods=['POST'])
-def scrape_for_location():
-    url = request.json['url']
-    return process_and_analyse(url)
+# @app.route('/scrap', methods=['POST'])
+# def scrape_for_location():
+#     url = request.json['url']
+#     return process_and_analyse(url)
 
 def run_flask():
     port_to_run = int(os.environ.get('PORT', 5000))
