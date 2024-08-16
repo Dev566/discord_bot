@@ -54,6 +54,7 @@ import os
 from dotenv import load_dotenv , dotenv_values
 from discordBot import discord_bot_run
 from scrapper import process_and_analyse
+from pageInsight import run_playwright_script
 load_dotenv()
 
 app = Flask(__name__)
@@ -61,6 +62,10 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return "Thanks for waking me up!"
+
+@app.route('/pageInsight')
+def page_insight():
+    return run_playwright_script()
 
 
 @app.route('/scrap', methods=['POST'])
