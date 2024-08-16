@@ -36,7 +36,7 @@ async def send_message_to_channel(chanel_id, message='Hello!'):
 # EVENT LISTENER FOR WHEN THE BOT HAS SWITCHED FROM OFFLINE TO ONLINE.
 @bot.event
 async def on_ready():
-    await send_message_to_channel(VIVY_CHANNEL_ID, "I will in testing phase. Testing 3 hour status update.")
+    await send_message_to_channel(VIVY_CHANNEL_ID, "I will in testing phase. Testing 3 min status update.")
     while not bot.is_closed():
         print("Checking status")
         status_message = await check_website_status("https://dev.waku-travel.com/")
@@ -44,7 +44,7 @@ async def on_ready():
         await send_message_to_channel(VIVY_CHANNEL_ID,status_message)
         print("Message send")
         # Wait for 3 hours (10800 seconds) before checking again
-        await asyncio.sleep(10800)  # Sleep for 3 hours   
+        await asyncio.sleep(10800/60)  # Sleep for 3 hours   
 
 
 async def check_website_status_loop():
